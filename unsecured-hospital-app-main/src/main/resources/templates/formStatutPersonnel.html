@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8">
+    <title>Statuts</title>
+</head>
+<body>
+  <div layout:fragment="content">
+    <div class="p-3">
+      <!-- Formulaire pour ajouter/modifier une statutPersonnel -->
+      <form th:action="@{/saveStatutPersonnel}" th:object="${statutPersonnel}" method="post">
+        <input type="hidden" name="keyword" th:value="${keyword}" />
+        <div>
+            <label for="libelle">Libellé</label>
+            <input type="text" class="form-control" id="libelle" th:field="*{libelle}" />
+            <!-- Affichage d'une erreur spécifique au champ libelle -->
+            <div th:if="${#fields.hasErrors('libelle')}" class="alert alert-danger" th:each="error : ${#fields.errors('libelle')}" th:text="${error}"></div>
+        </div>
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

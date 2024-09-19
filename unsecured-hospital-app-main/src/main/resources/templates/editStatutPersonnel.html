@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Statut</title>
+</head>
+<body>
+  <div layout:fragment="content">
+    <div class="p-3">
+      <form method="post" th:action="@{/saveStatutPersonnel}" th:object="${statutPersonnel}">
+        <!-- ID caché pour l'édition -->
+        <div class="mb-3 mt-3">
+          <label for="id" class="form-label">ID:</label>
+          <label th:text="${statutPersonnel.id}"></label>
+          <input type="hidden" class="form-control" id="id" name="id" th:value="${statutPersonnel.id}">
+        </div>
+        <!-- Champ caché pour le keyword -->
+        <input type="hidden" name="keyword" th:value="${keyword}"/>
+
+        <div class="mb-3 mt-3">
+          <label for="libelle" class="form-label">Libelle:</label>
+          <input type="text" class="form-control" id="libelle" name="libelle" th:value="${statutPersonnel.libelle}" placeholder="Libelle"/>
+          <span class="text-danger" th:if="${#fields.hasErrors('libelle')}" th:text="${#fields.errors('libelle')}"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8">
+    <title>Sections</title>
+</head>
+<body>
+  <div layout:fragment="content">
+    <div class="p-3">
+      <!-- Affichage du message flash -->
+      <div th:if="${not #strings.isEmpty(message)}" class="alert" th:classappend="${alertClass}" role="alert">
+        <span th:text="${message}"></span>
+      </div>
+      
+      <form method="post" th:action="@{saveSection}" th:object="${section}">
+        
+        <!-- Affichage des messages d'erreur pour le libelle -->
+        <div th:if="${#fields.hasErrors('libelle')}" class="alert alert-danger" role="alert">
+          <span th:errors="*{libelle}">Nom du section déjà utilisé.</span>
+        </div>
+
+        <!-- Champ libelle -->
+        <div class="mb-3 mt-3">
+          <label for="libelle" class="form-label">Libelle:</label>
+          <input type="text" class="form-control" id="libelle" placeholder="Libelle" th:field="*{libelle}">
+        </div>
+
+        <!-- Sélection service -->
+        <div class="mb-3 mt-3">
+          <label for="service" class="form-label">Service:</label>
+          <select class="form-select" id="service" th:field="*{service.id}">
+            <option th:each="service : ${services}"
+                    th:value="${service.id}"
+                    th:text="${service.libelle}"></option>
+          </select>
+          <span class="text-danger" th:if="${#fields.hasErrors('service.id')}" th:text="${#fields.errors('service.id')}"></span>
+        </div>
+
+        <!-- Bouton de soumission -->
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

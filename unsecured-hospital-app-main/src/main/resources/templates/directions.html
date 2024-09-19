@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{template}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Directions</title>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="p-3">
+        <!-- Affichage du message flash -->
+        <div
+          th:if="${not #strings.isEmpty(message)}"
+          class="alert"
+          th:classappend="${alertClass}"
+          role="alert"
+        >
+          <span th:text="${message}"></span>
+        </div>
+        <div class="card">
+          <div class="card-header">Liste des directions</div>
+          <div class="card-body">
+            <!-- Formulaire de recherche -->
+            <form method="get" th:action="@{/index}">
+              <ul class="nav nav-pills">
+                <li>
+                  <label class="form-label">Keyword:</label>
+                </li>
+                <li>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="keyword"
+                    th:value="${keyword}"
+                    placeholder="Entrez le mot clé"
+                  />
+                </li>
+                <li>
+                  <button class="btn btn-info">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </li>
+              </ul>
+            </form>
+
+            <!-- Table des directions -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Code</th>
+                  <th>Libelle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="p : ${listDirections}">
+                  <td th:text="${p.id}"></td>
+                  <td th:text="${p.code}"></td>
+                  <td th:text="${p.libelle}"></td>
+                  <td>
+                    <a
+                      onclick="return confirm('Etes vous sûre?')"
+                      class="btn btn-danger"
+                      th:href="@{deleteDirection(id=${p.id}, keyword=${keyword}, page=${currentPage})}"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a
+                      class="btn btn-primary"
+                      th:href="@{editDirection(id=${p.id}, keyword=${keyword})}"
+                    >
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <ul class="nav nav-pills">
+              <li th:each="page, status : ${pages}">
+                <a th:class="${status.index == currentPage ? 'btn btn-info ms-1' : 'btn btn-outline-info ms-1'}"
+                    th:href="@{/index(page=${status.index}, keyword=${keyword})}"
+                    th:text="${status.index + 1}">
+                  </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

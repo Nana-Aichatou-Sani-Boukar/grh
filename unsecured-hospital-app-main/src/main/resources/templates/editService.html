@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Service</title>
+</head>
+<body>
+  <div layout:fragment="content">
+    <div class="p-3">
+      <form method="post" th:action="@{/saveService}" th:object="${service}">
+        <!-- ID caché pour l'édition -->
+        <div class="mb-3 mt-3">
+          <label for="id" class="form-label">ID:</label>
+          <label th:text="${service.id}"></label>
+          <input type="hidden" class="form-control" id="id" name="id" th:value="${service.id}">
+        </div>
+
+        <div class="mb-3 mt-3">
+          <label for="libelle" class="form-label">Libelle:</label>
+          <input type="text" class="form-control" id="libelle" name="libelle" th:value="${service.libelle}" placeholder="Libelle"/>
+          <span class="text-danger" th:if="${#fields.hasErrors('libelle')}" th:text="${#fields.errors('libelle')}"></span>
+        </div>
+
+        <div class="mb-3 mt-3">
+          <label for="direction" class="form-label">Direction:</label>
+          <select class="form-select" id="direction" name="direction.id">
+            <option th:each="direction : ${directions}"
+                    th:value="${direction.id}"
+                    th:text="${direction.libelle}"
+                    th:selected="${direction.id == service.direction.id}"></option>
+          </select>
+          <span class="text-danger" th:if="${#fields.hasErrors('direction.id')}" th:text="${#fields.errors('direction.id')}"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
